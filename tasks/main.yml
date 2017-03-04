@@ -19,6 +19,7 @@
     - libio-socket-ssl-perl
     - perl
     - cpanminus
+  become: true
 
 - name: Copy over DDClient Executable
   synchronize:
@@ -28,6 +29,7 @@
   notify:
     - Restart ddclient
   when: ddclient_git_repo|changed
+  become: true
 
 - name: Create /etc and /var/cache Directories
   file:
@@ -39,6 +41,7 @@
   with_items:
     - "/etc/ddclient"
     - "/var/cache/ddclient"
+  become: true
 
 - name: Build Out ddclient.conf File
   template:
@@ -46,6 +49,7 @@
     dest: /etc/ddclient/ddclient.conf
     owner: root
     group: root
+  become: true
 
 - name: Copy Over init.d File
   synchronize:
@@ -55,6 +59,7 @@
   when:
     - ansible_os_family == "Debian"
     - ddclient_git_repo|changed
+  become: true
 
 - name: Make All The Files Executable
   file:
@@ -67,6 +72,7 @@
     - { path: "/etc/init.d/ddclient", mode: "0750" }
     - { path: "/etc/ddclient/ddclient.conf", mode: "0700" }
     - { path: "/usr/sbin/ddclient", mode: "0750" }
+  become: true
 
 - name: Install CPAN Dependencies
   cpanm:
@@ -77,11 +83,14 @@
     - "IO::Socket::SSL"
     - "IO::Socket::INET6"
     - "JSON::PP"
+  become: true
 
 - name: Add ddclient to autostart
   shell: 'update-rc.d ddclient defaults'
   when: ddclient_git_repo|changed
+  become: true
 
 - name: Start ddclient
   service: name=ddclient state=started
   when: ddclient_git_repo|changed
+  become: true

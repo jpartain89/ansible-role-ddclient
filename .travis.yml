@@ -1,42 +1,39 @@
----
+sudo: required
+dist: xenial
 language: python
-python: "2.7"
-
+python: '2.7'
 before_install:
-  - sudo apt-get update -qq
-
+- sudo apt-get update -qq
+- sudo apt-get install -qq python-apt
+- openssl aes-256-cbc -k "$vault_file_pass" -in tests/.vault_pass.enc -out tests/.vault_pass.txt
+  -d
+- "${TRAVIS_BUILD_DIR}/.travis/crypting.sh decrypt"
 install:
-  # Install Ansible.
-  - pip install ansible
-
-  # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-
+- pip install ansible
+- "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 script:
-  # Check the role/playbook's syntax.
-  - "ansible-playbook -i tests/inventory tests/test.yml --syntax-check"
-
-  # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo"
-
-  # Run the role/playbook again, checking to make sure it's idempotent.
-  - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
-
-  # Test if ddclient.conf is created
-  - >
-    [ -e /etc/ddclient/ddclient.conf ]
-    && (echo "ddclient.conf was created correctly." && exit 0)
-    || (echo "ddclient.conf was not created." && exit 1)
-
-  # Test if ddclient binary is installed
-  - >
-    [ -e /usr/sbin/ddclient ]
-    && (echo "ddclient binary is installed." && exit 0) ||
-    (echo "ddclient binary is not installed" && exit 1)
-
+- ANSIBLE_VAULT_PASSWORD_FILE=tests/.vault_pass.txt ansible-playbook -i tests/inventory
+  tests/test.yml --syntax-check
+- ANSIBLE_VAULT_PASSWORD_FILE=tests/.vault_pass.txt ansible-playbook -i tests/inventory
+  tests/test.yml --connection=local --sudo
+- 'ANSIBLE_VAULT_PASSWORD_FILE=tests/.vault_pass.txt ansible-playbook -i tests/inventory
+  tests/test.yml --connection=local --sudo | grep -q ''changed=0.*failed=0'' && (echo
+  ''Idempotence test: pass'' && exit 0) || (echo ''Idempotence test: fail'' && exit
+  1)'
+- "[ -e /etc/ddclient/ddclient.conf ] && (echo 'ddclient.conf was created correctly.'
+  && exit 0) || (echo 'ddclient.conf was not created.' && exit 1)"
+- "[ -e /usr/sbin/ddclient ] && (echo 'ddclient binary is installed.' && exit 0) ||
+  (echo 'ddclient binary is not installed' && exit 1)"
+- (sudo ddclient -exec -debug | awk '{ print $1 }' | while IFS= read -r lines; do 
+  if [[ "$lines" != *"DEBUG:"* ]]; then echo "Failed!"; exit 1; fi
+  done)
+after_script:
+- "${TRAVIS_BUILD_DIR}}/.travis/crypted.sh clean"
+- shred tests/.vault_pass.txt
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  slack:
+    secure: kK0MF6AhyPLEXkhFFjneCKbtmddeZnD3XbRHWUYqkIhKuwBaNq0q52mrHYug4X3xDYW4n84gFqUjcUoazA5X80WRp4KseVejKNShQ7zZDwiapneWRVxUbgvr0Xet5rLmgDP5qDnoiGOz2BDIJAn04HCgULwG5cZfeBJVJIR84leRixyl8MmomgvBEHV6hvwrbSdEGLP4ilaD5OgFJOE7bgyzcd9gyQ5AQclChTGqMRCibNpRwe0jbMRvGpFVCzewMSS4LapSfwCV8rRj+6P59pO44chmyiM9lADZg0O0JVhyp6RnyCgF/Ocg35XQ2tadInjy8Nlft73hpwo/b5zGn7UXxT0d7sXEYGGJbn5gZ8BUuzougLKZ9n3kGvXUEBF0J1mBYYhpLS3ue+hVQgdHhMV/Rl+GpBZWmuX2IzlIV611q+8OtsXPzO0uCYhM8BgXTSu8iiA4Jn2AoC5zNRcN5QPlZFcr73sKG8KjcG74YI+6Nb9HqflmrOawL2SLjWCNl2PFgkeyT/twBRYtpaT/ruTKuS9Q6drDIeKtEtJbnPIN/DAnTZq7m5kMWVBUaTtUpFMNM5/DTlgyTne2iB00hXibbfQ7i0epzfUYffYkvfhzC5LRk+/bq9iyIG4wpksFkwsGmHFTk2Pkiveb2ganWRY83zbLqtJ9CLlwGoUtYUw=
+env:
+  global:
+    secure: AB0uE+b2Dw1KOlEIRehtE8d5CgEtNqmB32pDlQ2OAqmWYDOVN4VbM5gkYwnsxFCaU+T2ZwCeIzuZUw4nBJlXbKWtf/m1D10WIOJhv0jOO9wIVLlXr/ZA1waaEbQgn/FKk7+PTi3Wh1DK88IlS3HDliLamVJ9zR0UULfUli30zMZQmKrP6iiA3i5NGzgfr7/OIrzMSwFcsLk+dZCLE3C2hM3EeaudubR3RA5ATHVsmA4v9qCOtPRpBisiNDjKl16QU1Cd4TWfVl25bhzGVXG5FE2imcaqyjOb2AdWHypIZJQUGZvW1JB0l4DNR17xx25LbW9BeXSYe50yzYBppghYlMnc0tmz/li38xyKLvoL8Ma6vvdfHlcCTyLtoWjo6eRMkkoiXwOCXN2pTEt6mwzIeaQXSZio+HucEpv1RNArMomhwSbzgNUWBjhED/WS9wFlHO2wAZtb72P/QuXzlNVqp8KBJByJnCNEA4KanqP4wv5ritlHDWvESXMQIHcsW9z2Dhf8j6K4CdR3V9Q5Kt7OvkdDnTwUNjsgJZiKxOJE2nUnkoKEI5Zc9EQNvqIY4z4nr0uWjAcuyUcYrnMcRYCGqACn4OWxpw87dsIE77qNFZMkN/k5n91WL70iB6g/80KgMAPD5TOeq2QuC1RnNcoCWORpONKRI9k73fMpjkJkjUI=
