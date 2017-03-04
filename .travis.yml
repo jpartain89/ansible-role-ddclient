@@ -26,11 +26,17 @@ script:
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
-  # Test if the file is a symbolic link.
+  # Test if ddclient.conf is created
   - >
-    [ -h ~/.inputrc ]
-    && (echo "Files were linked correctly." && exit 0)
-    || (echo "Files were not linked correctly." && exit 1)
+    [ -e /etc/ddclient/ddclient.conf ]
+    && (echo "ddclient.conf was created correctly." && exit 0)
+    || (echo "ddclient.conf was not created." && exit 1)
+
+  # Test if ddclient binary is installed
+  - >
+    [ -e /usr/sbin/ddclient ]
+    && (echo "ddclient binary is installed." && exit 0) ||
+    (echo "ddclient binary is not installed" && exit 1)
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
