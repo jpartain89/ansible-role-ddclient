@@ -5,7 +5,7 @@ before_install:
 - sudo apt-get update -qq
 - sudo apt-get install -qq python-apt
 - pip install ansible-vault
-- openssl aes-256-cbc -k "$vault_file_pass" -in tests/.vault_pass.enc -out tests/.vault_pass.txt -d
+#- openssl aes-256-cbc -k "$vault_file_pass" -in tests/.vault_pass.enc -out tests/.vault_pass.txt -d
 - "${TRAVIS_BUILD_DIR}/.travis/crypting.sh decrypt"
 install:
 - pip install ansible
@@ -25,7 +25,7 @@ script:
   (echo 'ddclient binary is not installed' && exit 1)"
 - "sudo ddclient -exec -debug >/dev/null 2>&1 && (echo 'Testing ddclient by -exec -debug passed' && exit 0) || (echo 'Testing ddclient by -exec -debug failed' && exit 1)"
 after_script:
-- "${TRAVIS_BUILD_DIR}}/.travis/crypted.sh clean"
+- "${TRAVIS_BUILD_DIR}/.travis/crypted.sh clean"
 - shred tests/.vault_pass.txt
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
