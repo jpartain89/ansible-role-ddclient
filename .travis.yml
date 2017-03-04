@@ -24,9 +24,8 @@ script:
   && exit 0) || (echo 'ddclient.conf was not created.' && exit 1)"
 - "[ -e /usr/sbin/ddclient ] && (echo 'ddclient binary is installed.' && exit 0) ||
   (echo 'ddclient binary is not installed' && exit 1)"
-- (sudo ddclient -exec -debug | awk '{ print $1 }' | while IFS= read -r lines; do 
-  if [[ "$lines" != *"DEBUG:"* ]]; then echo "Failed!"; exit 1; fi
-  done)
+- (sudo ddclient -exec -debug | awk '{ print $1 }' | while IFS= read -r lines; do
+  if [[ "$lines" != *"DEBUG:"* ]]; then echo "Failed!"; exit 1; fi done)
 after_script:
 - "${TRAVIS_BUILD_DIR}}/.travis/crypted.sh clean"
 - shred tests/.vault_pass.txt
@@ -36,4 +35,4 @@ notifications:
     secure: kK0MF6AhyPLEXkhFFjneCKbtmddeZnD3XbRHWUYqkIhKuwBaNq0q52mrHYug4X3xDYW4n84gFqUjcUoazA5X80WRp4KseVejKNShQ7zZDwiapneWRVxUbgvr0Xet5rLmgDP5qDnoiGOz2BDIJAn04HCgULwG5cZfeBJVJIR84leRixyl8MmomgvBEHV6hvwrbSdEGLP4ilaD5OgFJOE7bgyzcd9gyQ5AQclChTGqMRCibNpRwe0jbMRvGpFVCzewMSS4LapSfwCV8rRj+6P59pO44chmyiM9lADZg0O0JVhyp6RnyCgF/Ocg35XQ2tadInjy8Nlft73hpwo/b5zGn7UXxT0d7sXEYGGJbn5gZ8BUuzougLKZ9n3kGvXUEBF0J1mBYYhpLS3ue+hVQgdHhMV/Rl+GpBZWmuX2IzlIV611q+8OtsXPzO0uCYhM8BgXTSu8iiA4Jn2AoC5zNRcN5QPlZFcr73sKG8KjcG74YI+6Nb9HqflmrOawL2SLjWCNl2PFgkeyT/twBRYtpaT/ruTKuS9Q6drDIeKtEtJbnPIN/DAnTZq7m5kMWVBUaTtUpFMNM5/DTlgyTne2iB00hXibbfQ7i0epzfUYffYkvfhzC5LRk+/bq9iyIG4wpksFkwsGmHFTk2Pkiveb2ganWRY83zbLqtJ9CLlwGoUtYUw=
 env:
   global:
-    secure: AB0uE+b2Dw1KOlEIRehtE8d5CgEtNqmB32pDlQ2OAqmWYDOVN4VbM5gkYwnsxFCaU+T2ZwCeIzuZUw4nBJlXbKWtf/m1D10WIOJhv0jOO9wIVLlXr/ZA1waaEbQgn/FKk7+PTi3Wh1DK88IlS3HDliLamVJ9zR0UULfUli30zMZQmKrP6iiA3i5NGzgfr7/OIrzMSwFcsLk+dZCLE3C2hM3EeaudubR3RA5ATHVsmA4v9qCOtPRpBisiNDjKl16QU1Cd4TWfVl25bhzGVXG5FE2imcaqyjOb2AdWHypIZJQUGZvW1JB0l4DNR17xx25LbW9BeXSYe50yzYBppghYlMnc0tmz/li38xyKLvoL8Ma6vvdfHlcCTyLtoWjo6eRMkkoiXwOCXN2pTEt6mwzIeaQXSZio+HucEpv1RNArMomhwSbzgNUWBjhED/WS9wFlHO2wAZtb72P/QuXzlNVqp8KBJByJnCNEA4KanqP4wv5ritlHDWvESXMQIHcsW9z2Dhf8j6K4CdR3V9Q5Kt7OvkdDnTwUNjsgJZiKxOJE2nUnkoKEI5Zc9EQNvqIY4z4nr0uWjAcuyUcYrnMcRYCGqACn4OWxpw87dsIE77qNFZMkN/k5n91WL70iB6g/80KgMAPD5TOeq2QuC1RnNcoCWORpONKRI9k73fMpjkJkjUI=
+    secure: t7uN7m0nC4ZR8119+N4Bgpm8NyoqdSfmIvuARaHl5jpGuBoFntRy07tPnZMkjlGYupxa9dgbxfYLKRhRfoZGItPT9e511aTV1z7a8EKvyfjE7eNU8JBoBm1YqRikq3ukbN48YPstO9PNPyBFognX5P+1vjdmqqWYRr3UtT9Svw0Rqs2U5FS/7sXi81KH6Eck0+YuuwXv/4Wo7ynuVrCmiuo2H1UmorfDA8Z0qRet8JlHEW1uiKwvx3k4UURHPAASJPleXAskPgqsqY32UUNC3FBzlTlqnteiKOKUnNFlYwHu/kkTkmwMxaqsHYRd9cNAmR0tyqaLAnyXZbDk+ETjJM2TheZnJhXuTHJ+IRz5O/XONb4OiMTr6168bUOb0LpDC5kB4t1VaCHIMKehiUEZupWzEG4RdVW6zBO6ObULETTncTHfkxQnPrLIk8LZesPVZpUCfeIwJZFG9Ia3tOyW+o50KmwlpUqJIAntgann3thQ/h0HYz5flx5xb9C+VHUkJbDKrN69FZIA/ZTx1Vtk7M9xFFVyTqYbgzMiFTcb7AKK4IkyFSnd9jQMp0GhPZiNGz4kQcxkToTjsi1SU0ivE9Cj3bb8hKBP8yX/G0wfmvlY9hcRZ3ukLdfLuquFJTt0c+Y/auGGlPL7tBhX9MAL+6mk3Bjw2cX72v9pNovRpC4=
