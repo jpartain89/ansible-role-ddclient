@@ -1,0 +1,87 @@
+---
+# ddclient/tasks/main.yml
+
+- name: Clone DDClient's Git Repo
+  git:
+    repo: "{{ ddclient_git_repo }}"
+    dest: "{{ git_loc }}/ddclient"
+    update: yes
+    accept_hostkey: yes
+  register: ddclient_git_repo
+
+- name: Install apt Dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ cache_valid_time_var }}"
+  with_items:
+    - libio-socket-ssl-perl
+    - perl
+    - cpanminus
+
+- name: Copy over DDClient Executable
+  synchronize:
+    src: "{{ git_loc }}/ddclient/ddclient"
+    dest: "/usr/sbin/ddclient"
+  delegate_to: "{{ inventory_hostname }}"
+  notify:
+    - Restart ddclient
+  when: ddclient_git_repo|changed
+
+- name: Create /etc and /var/cache Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  with_items:
+    - "/etc/ddclient"
+    - "/var/cache/ddclient"
+
+- name: Build Out ddclient.conf File
+  template:
+    src: ddclient.conf.j2
+    dest: /etc/ddclient/ddclient.conf
+    owner: root
+    group: root
+
+- name: Copy Over init.d File
+  synchronize:
+    src: "{{ git_loc }}/ddclient/sample-etc_rc.d_init.d_ddclient.ubuntu"
+    dest: "/etc/init.d/ddclient"
+  delegate_to: "{{ inventory_hostname }}"
+  when:
+    - ansible_os_family == "Debian"
+    - ddclient_git_repo|changed
+
+- name: Make All The Files Executable
+  file:
+    path: "{{ item.path }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    state: file
+  with_items:
+    - { path: "/etc/init.d/ddclient", mode: "0750" }
+    - { path: "/etc/ddclient/ddclient.conf", mode: "0700" }
+    - { path: "/usr/sbin/ddclient", mode: "0750" }
+
+- name: Install CPAN Dependencies
+  cpanm:
+    name: "{{ item }}"
+    system_lib: yes
+  with_items:
+    - "Data::Validate::IP"
+    - "IO::Socket::SSL"
+    - "IO::Socket::INET6"
+    - "JSON::PP"
+
+- name: Add ddclient to autostart
+  shell: 'update-rc.d ddclient defaults'
+  when: ddclient_git_repo|changed
+
+- name: Start ddclient
+  service: name=ddclient state=started
+  when: ddclient_git_repo|changed

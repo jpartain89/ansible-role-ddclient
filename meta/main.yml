@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: jpartain89
+  description: Installation and Configuration from Git of DDClient
+  company: "JPCDI"
+  license: "license (BSD, GPLv3)"
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+      - xenial
+      - wily
+  - name: Debian
+    versions:
+      - wheezy
+      - stretch
+  galaxy_tags:
+    - development
+    - system
+    - network
+
+dependencies: []
