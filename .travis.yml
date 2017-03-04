@@ -24,8 +24,9 @@ script:
   && exit 0) || (echo 'ddclient.conf was not created.' && exit 1)"
 - "[ -e /usr/sbin/ddclient ] && (echo 'ddclient binary is installed.' && exit 0) ||
   (echo 'ddclient binary is not installed' && exit 1)"
-- (sudo ddclient -exec -debug | awk '{ print $1 }' | while IFS= read -r lines; do
-  if [[ "$lines" != *"DEBUG:"* ]]; then echo "Failed!"; exit 1; fi done)
+- "sudo ddclient -exec -debug >/dev/null 2>&1 && \
+  (echo 'Testing ddclient by -exec -debug passed' && exit 0) || \
+  (echo 'Testing ddclient by -exec -debug failed' && exit 1)'
 after_script:
 - "${TRAVIS_BUILD_DIR}}/.travis/crypted.sh clean"
 - shred tests/.vault_pass.txt
