@@ -1,5 +1,0 @@
----
-# ddclient/handlers/main.yml
-
-- name: Restart ddclient
-  service: name=ddclient state=restarted
