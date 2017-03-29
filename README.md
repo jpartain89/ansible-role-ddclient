@@ -1,19 +1,17 @@
-Ansible Role: DDClient
-=========
+# Ansible Role: DDClient
 
 [![Build Status](https://travis-ci.org/jpartain89/ansible_ddclient.svg?branch=master)](https://travis-ci.org/jpartain89/ansible_ddclient)
 
 Installs DDClient from Wimpunk's Github Repo, and then configure's the ddclient.conf file.
 
-Requirements
-------------
+## Requirements
 
 CPANM will be installed, along with Perl and `libio-socket-ssl-perl`
 
-Role Variables
---------------
+## Role Variables
 
 Each line under `ddclient_conf` will be placed in `/etc/ddclient/ddclient.conf` as-is.
+
 ```
 ddclient_conf:
   - "protocol=dyndns2"
@@ -21,8 +19,7 @@ ddclient_conf:
   - "server=domains.google.com"
 ```
 
-Example Playbook
-----------------
+## Example Playbook
 
     - hosts: ddclient
       become: true
@@ -36,12 +33,10 @@ Example Playbook
       roles:
          - jpartain89.ddclient
 
-License
--------
+## License
 
-BSD, GPLv2
+GPLv2
 
-Author Information
-------------------
+## Author Information
 
 JPCDI, JPartain89 and Justin Partain
