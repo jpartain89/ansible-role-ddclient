@@ -22,7 +22,7 @@ script:
   (echo 'ddclient binary is not installed' && exit 1)"
 - "sudo ddclient -exec -debug >/dev/null 2>&1 && (echo 'Testing ddclient by -exec -debug passed' && exit 0) || (echo 'Testing ddclient by -exec -debug failed' && exit 1)"
 after_script:
-- "${TRAVIS_BUILD_DIR}/.travis/crypted.sh clean"
+- "${TRAVIS_BUILD_DIR}/.travis/crypting.sh clean"
 - shred tests/.vault_pass.txt
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
