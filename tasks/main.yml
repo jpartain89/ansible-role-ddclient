@@ -25,9 +25,9 @@
   synchronize:
     src: "{{ git_loc }}/ddclient/ddclient"
     dest: "/usr/sbin/ddclient"
+    checksum: yes
+    times: no
   delegate_to: "{{ inventory_hostname }}"
-  notify:
-    - Restart ddclient
   when: ddclient_git_repo|changed
   become: true
 
@@ -55,10 +55,12 @@
   synchronize:
     src: "{{ git_loc }}/ddclient/sample-etc_rc.d_init.d_ddclient.ubuntu"
     dest: "/etc/init.d/ddclient"
-  delegate_to: "{{ inventory_hostname }}"
+    checksum: yes
+    times: no
   when:
     - ansible_os_family == "Debian"
     - ddclient_git_repo|changed
+  delegate_to: "{{ inventory_hostname }}"
   become: true
 
 - name: Make All The Files Executable
@@ -86,11 +88,8 @@
   become: true
 
 - name: Add ddclient to autostart
-  shell: 'update-rc.d ddclient defaults'
-  when: ddclient_git_repo|changed
-  become: true
+  service: name=ddclient enabled=yes
 
 - name: Start ddclient
   service: name=ddclient state=started
-  when: ddclient_git_repo|changed
   become: true
