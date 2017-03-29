@@ -25,9 +25,9 @@
   synchronize:
     src: "{{ git_loc }}/ddclient/ddclient"
     dest: "/usr/sbin/ddclient"
-  delegate_to: "{{ inventory_hostname }}"
-  notify:
-    - Restart ddclient
+    checksum: yes
+    times: no
+  delegate_to: "{{ inventory_hostname }}" 
   become: true
 
 - name: Create /etc and /var/cache Directories
@@ -54,8 +54,9 @@
   synchronize:
     src: "{{ git_loc }}/ddclient/sample-etc_rc.d_init.d_ddclient.ubuntu"
     dest: "/etc/init.d/ddclient"
+    checksum: yes
+    times: no
   delegate_to: "{{ inventory_hostname }}"
-  when: ansible_os_family == "Debian"
   become: true
 
 - name: Make All The Files Executable
@@ -83,8 +84,7 @@
   become: true
 
 - name: Add ddclient to autostart
-  shell: 'update-rc.d ddclient defaults'
-  become: true
+  service: name=ddclient enabled=yes
 
 - name: Start ddclient
   service: name=ddclient state=started
