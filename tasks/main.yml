@@ -57,6 +57,9 @@
     dest: "/etc/init.d/ddclient"
     checksum: yes
     times: no
+  when:
+    - ansible_os_family == "Debian"
+    - ddclient_git_repo|changed
   delegate_to: "{{ inventory_hostname }}"
   become: true
 
