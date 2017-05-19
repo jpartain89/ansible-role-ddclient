@@ -59,7 +59,7 @@
     times: no
   when:
     - ansible_os_family == "Debian"
-    - ddclient_git_repo.changed
+    - ddclient_git_cloned.changed
   delegate_to: "{{ inventory_hostname }}"
   become: true
   notify: Autostart DDClient
