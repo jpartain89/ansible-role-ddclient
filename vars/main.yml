@@ -1,5 +1,6 @@
 ---
 # ddclient/vars/main.yml
 
-ddclient_git_repo: "https://github.com/wimpunk/ddclient.git"
+ddclient_git_repo_http: "https://github.com/wimpunk/ddclient.git"
+ddclient_git_repo_dest: "/usr/local/lib/ddclient-git"
 ddclient_pid_file: /var/run/ddclient.pid
