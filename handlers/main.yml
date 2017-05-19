@@ -1,0 +1,7 @@
+---
+
+- name: Autostart DDClient
+  service: name=ddclient enabled=yes
+
+- name: Start DDClient
+  service: name=ddclient state=started
