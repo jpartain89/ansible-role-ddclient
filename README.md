@@ -2,7 +2,7 @@
 
 | **Travis-CI** |
 | ---- |
-| [![Build Status](https://travis-ci.org/jpartain89/ansible_ddclient.svg?branch=master)](https://travis-ci.org/jpartain89/ansible_ddclient) |
+| [![Build Status](https://travis-ci.org/jpartain89/ansible-role-ddclient.svg?branch=master)](https://travis-ci.org/jpartain89/ansible-role-ddclient) |
 
 Installs DDClient from Wimpunk's Github Repo, and then configure's the ddclient.conf file.
 
