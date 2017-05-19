@@ -8,6 +8,8 @@
     update: yes
     accept_hostkey: yes
   register: ddclient_git_cloned
+  
+- debug: var=ddclient_git_cloned
 
 - name: Install apt Dependencies
   apt:
