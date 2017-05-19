@@ -1,6 +1,8 @@
 # Ansible Role: DDClient
 
-[![Build Status](https://travis-ci.org/jpartain89/ansible_ddclient.svg?branch=master)](https://travis-ci.org/jpartain89/ansible_ddclient)
+| **Travis-CI** |
+| ---- |
+| [![Build Status](https://travis-ci.org/jpartain89/ansible_ddclient.svg?branch=master)](https://travis-ci.org/jpartain89/ansible_ddclient) |
 
 Installs DDClient from Wimpunk's Github Repo, and then configure's the ddclient.conf file.
 
@@ -12,7 +14,7 @@ CPANM will be installed, along with Perl and `libio-socket-ssl-perl`
 
 Each line under `ddclient_conf` will be placed in `/etc/ddclient/ddclient.conf` as-is.
 
-```
+```bash
 ddclient_conf:
   - "protocol=dyndns2"
   - "use=web"
