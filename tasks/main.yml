@@ -53,7 +53,7 @@
 
 - name: Copy Over init.d File
   synchronize:
-    src: "{{ git_loc }}/ddclient/sample-etc_rc.d_init.d_ddclient.ubuntu"
+    src: "{{ ddclient_git_repo_dest }}/ddclient/sample-etc_rc.d_init.d_ddclient.ubuntu"
     dest: "/etc/init.d/ddclient"
     checksum: yes
     times: no
