@@ -1,14 +1,11 @@
 ---
 # ddclient/defaults/main.yml
 
-git_loc: "{{ ansible_user_dir }}/git"
-cache_valid_time_var: 86400
-
-ddclient_conf:
-  - "protocol=dyndns2"
-  - "use=web"
-  - "server=domains.google.com"
-  - "ssl=yes"
-  - "login="
-  - "password="
-  - "jpcdi.com"
+#ddclient_conf:
+#  - "protocol="
+#  - "use=
+#  - "server="
+#  - "ssl="
+#  - "login="
+#  - "password="
+#  - "address
