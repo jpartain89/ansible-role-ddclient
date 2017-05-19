@@ -3,18 +3,18 @@
 
 - name: Clone DDClient's Git Repo
   git:
-    repo: "{{ ddclient_git_repo }}"
-    dest: "{{ git_loc }}/ddclient"
+    repo: "{{ ddclient_git_repo_http }}"
+    dest: "{{ ddclient_git_repo_dest }}"
     update: yes
     accept_hostkey: yes
-  register: ddclient_git_repo
+  register: ddclient_git_cloned
 
 - name: Install apt Dependencies
   apt:
     name: "{{ item }}"
     state: latest
     update_cache: yes
-    cache_valid_time: "{{ cache_valid_time_var }}"
+    cache_valid_time: 86400
   with_items:
     - libio-socket-ssl-perl
     - perl
@@ -23,12 +23,15 @@
 
 - name: Copy over DDClient Executable
   synchronize:
-    src: "{{ git_loc }}/ddclient/ddclient"
+    src: "{{ ddclient_git_cloned.dest }}/ddclient"
     dest: "/usr/sbin/ddclient"
     checksum: yes
     times: no
+    owner: root
+    group: root
+    mode: 0775
   delegate_to: "{{ inventory_hostname }}"
-  when: ddclient_git_repo|changed
+  when: ddclient_git_cloned.changed
   become: true
 
 - name: Create /etc and /var/cache Directories
@@ -59,9 +62,10 @@
     times: no
   when:
     - ansible_os_family == "Debian"
-    - ddclient_git_repo|changed
+    - ddclient_git_repo.changed
   delegate_to: "{{ inventory_hostname }}"
   become: true
+  notify: Autostart DDClient
 
 - name: Make All The Files Executable
   file:
@@ -73,7 +77,7 @@
   with_items:
     - { path: "/etc/init.d/ddclient", mode: "0750" }
     - { path: "/etc/ddclient/ddclient.conf", mode: "0700" }
-    - { path: "/usr/sbin/ddclient", mode: "0750" }
+    - { path: "/usr/sbin/ddclient", mode: "0775" }
   become: true
 
 - name: Install CPAN Dependencies
@@ -86,10 +90,5 @@
     - "IO::Socket::INET6"
     - "JSON::PP"
   become: true
+  notify: Start DDClient
 
-- name: Add ddclient to autostart
-  service: name=ddclient enabled=yes
-
-- name: Start ddclient
-  service: name=ddclient state=started
-  become: true
