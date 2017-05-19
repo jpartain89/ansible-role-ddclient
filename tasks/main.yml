@@ -27,9 +27,6 @@
     dest: "/usr/sbin/ddclient"
     checksum: yes
     times: no
-    owner: root
-    group: root
-    mode: 0775
   delegate_to: "{{ inventory_hostname }}"
   when: ddclient_git_cloned.changed
   become: true
