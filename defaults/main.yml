@@ -3,7 +3,6 @@
 
 ddclient_git_repo_http: "https://github.com/wimpunk/ddclient.git"
 ddclient_git_repo_dest: "{{ ansible_user_dir }}/git/ddclient"
-ddclient_pid_file: /var/run/ddclient.pid
 ddclient_conf:
   - name: "Blank"
     protocol: value
