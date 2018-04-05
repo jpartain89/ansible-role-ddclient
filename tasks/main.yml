@@ -7,7 +7,7 @@
     dest: "{{ ddclient_git_repo_dest }}"
     update: yes
     accept_hostkey: yes
-  register: ddclient_git_cloned
+  register: _ddclient_git_cloned
 
 - name: Install apt Dependencies
   apt:
@@ -28,7 +28,7 @@
     checksum: yes
     times: no
   delegate_to: "{{ inventory_hostname }}"
-  when: ddclient_git_cloned.changed
+  when: _ddclient_git_cloned.changed
   become: true
 
 - name: Create /etc and /var/cache Directories
@@ -59,7 +59,7 @@
     times: no
   when:
     - ansible_os_family == "Debian"
-    - ddclient_git_cloned.changed
+    - _ddclient_git_cloned.changed
   delegate_to: "{{ inventory_hostname }}"
   become: true
   notify: Autostart DDClient
@@ -88,4 +88,3 @@
     - "JSON::PP"
   become: true
   notify: Start DDClient
-

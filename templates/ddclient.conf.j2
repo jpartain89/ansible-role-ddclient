@@ -1,5 +1,29 @@
 # {{ ansible_managed }}
 pid={{ ddclient_pid_file }}
-{% for lines in ddclient_conf %}
-{{ lines }}
+{% for name in ddclient_conf %}
+# {{ name }}
+{% if name.protocol is defined %}
+protocol={{ name.protocol }}
+{% endif -%}
+{% if name.use is defined %}
+use={{ name.use }}
+{% endif -%}
+{% if name.server is defined %}
+server={{ name.server }}
+{% endif -%}
+{% if name.ssl is defined %}
+ssl={{ name.ssl }}
+{% endif -%}
+{% if name.zone is defined %}
+zone={{ name.zone }}
+{% endif %}
+{% if name.login is defined %}
+login={{ name.login }}
+{% endif -%}
+{% if name.password is defined %}
+password={{ name.password }}
+{% endif -%}
+{% if name.address is defined %}
+{{ name.address }}
+{% endif -%}
 {% endfor %}

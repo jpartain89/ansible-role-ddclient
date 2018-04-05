@@ -9,11 +9,12 @@ galaxy_info:
   - name: Ubuntu
     versions:
       - xenial
-      - wily
+      - zesty
   - name: Debian
     versions:
       - wheezy
       - stretch
+      - jessie
   galaxy_tags:
     - development
     - system

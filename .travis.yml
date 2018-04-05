@@ -10,7 +10,7 @@ before_install:
 - sudo -H pip install -U ansible-vault
 
 install:
-- sudo -H pip install -U ansible
+- sudo -H pip install --upgrade ansible
 - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 
 script:
