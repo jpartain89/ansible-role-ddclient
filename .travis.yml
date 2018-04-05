@@ -17,7 +17,7 @@ script:
 - ANSIBLE_VAULT_PASSWORD_FILE=tests/.vault_pass.txt ansible-playbook -i tests/inventory
   tests/test.yml --syntax-check
 - ANSIBLE_VAULT_PASSWORD_FILE=tests/.vault_pass.txt ansible-playbook -i tests/inventory
-  tests/test.yml --connection=local --sudo
+  tests/test.yml --connection=local --become
 - "[ -e /etc/ddclient/ddclient.conf ] && (echo 'ddclient.conf was created correctly.'
   && exit 0) || (echo 'ddclient.conf was not created.' && exit 1)"
 - "[ -e /usr/sbin/ddclient ] && (echo 'ddclient binary is installed.' && exit 0) ||
