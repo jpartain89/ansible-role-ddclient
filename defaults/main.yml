@@ -1,11 +1,2 @@
 ---
 # ddclient/defaults/main.yml
-
-#ddclient_conf:
-#  - "protocol="
-#  - "use=
-#  - "server="
-#  - "ssl="
-#  - "login="
-#  - "password="
-#  - "address
