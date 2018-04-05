@@ -16,12 +16,12 @@ Each line under `ddclient_conf` will be placed in `/etc/ddclient/ddclient.conf` 
 
 ```bash
 ddclient_conf:
-  name: DynDNS2
-    - "protocol=dyndns2"
-    - "use=web"
-    - "server=domains.google.com"
-  name: Other
-    - "protocol=other"
+  - name: DynDNS2
+    protocol: dyndns2
+    use: web
+    server: domains.google.com
+  - name: Other
+    protocol: other
     ...
 ```
 
@@ -32,10 +32,10 @@ ddclient_conf:
 
       vars:
         ddclient_conf:
-          name: DynDNS2
-            - "protocol=dyndns2"
-            - "use=web"
-            - "server=domains.google.com"
+          - name: DynDNS2
+            protocol: dyndns2
+            use: web
+            server: domains.google.com
 
       roles:
          - jpartain89.ddclient
