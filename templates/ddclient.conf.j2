@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 pid={{ ddclient_pid_file }}
 {% for name in ddclient_conf %}
-# {{ name }}
+# {{ name.name }}
 {% if name.protocol is defined %}
 protocol={{ name.protocol }}
 {% endif -%}
