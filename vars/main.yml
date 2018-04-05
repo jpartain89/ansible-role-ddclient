@@ -6,10 +6,11 @@ ddclient_git_repo_dest: "{{ ansible_user_dir }}/git/ddclient"
 ddclient_conf:
   pid_file: /var/run/ddclient.pid
   name: "Blank"
-    - "protocol="
-    - "use=
-    - "server="
-    - "ssl="
-    - "login="
-    - "password="
-    - "address
+    rules:
+      - "protocol="
+      - "use=
+      - "server="
+      - "ssl="
+      - "login="
+      - "password="
+      - "address
