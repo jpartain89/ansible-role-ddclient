@@ -7,10 +7,10 @@ ddclient_conf:
   pid_file: /var/run/ddclient.pid
   name: "Blank"
     rules:
-      - "protocol="
-      - "use=
-      - "server="
-      - "ssl="
-      - "login="
-      - "password="
-      - "address
+      - "protocol": value
+      - "use": value
+      - "server": value
+      - "ssl": value
+      - "login": value
+      - "password": value
+      - "address": value
