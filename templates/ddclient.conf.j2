@@ -1,6 +1,9 @@
 # {{ ansible_managed }}
 pid={{ ddclient_conf.pid_file }}
-{% for lines in ddclient_conf.name.items() %}
+{% if ddclient_conf.name is defined %}
+{% for lines in ddclient_conf.name %}
 # {{ ddclient_conf.name }}
 {{ lines }}
-{+% endfor %}
+
+{% endfor %}
+{% endif %}
