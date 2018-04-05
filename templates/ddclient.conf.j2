@@ -1,29 +1,29 @@
 # {{ ansible_managed }}
 pid={{ ddclient_conf.pid_file }}
-{% for name in ddclient_conf %}
+{% for name in ddclient_conf.name %}
 # {{ name }}
-{% if ddclient_conf.protocol is defined %}
-protocol={{ ddclient_conf.protocol }}
+{% if name.protocol is defined %}
+protocol={{ name.protocol }}
 {% endif -%}
-{% if ddclient_conf.use is defined %}
-use={{ ddclient_conf.use }}
+{% if name.use is defined %}
+use={{ name.use }}
 {% endif -%}
-{% if ddclient_conf.server is defined %}
-server={{ ddclient_conf.server }}
+{% if name.server is defined %}
+server={{ name.server }}
 {% endif -%}
-{% if ddclient_conf.ssl is defined %}
-ssl={{ ddclient_conf.ssl }}
+{% if name.ssl is defined %}
+ssl={{ name.ssl }}
 {% endif -%}
-{% if ddclient_conf.zone is defined %}
-zone={{ ddclient_conf.zone }}
+{% if name.zone is defined %}
+zone={{ name.zone }}
 {% endif %}
-{% if ddclient_conf.login is defined %}
-login={{ ddclient_conf.login }}
+{% if name.login is defined %}
+login={{ name.login }}
 {% endif -%}
-{% if ddclient_conf.password is defined %}
-password={{ ddclient_conf.password }}
+{% if name.password is defined %}
+password={{ name.password }}
 {% endif -%}
-{% if ddclient_conf.address is defined %}
-{{ ddclient_conf.address }}
+{% if name.address is defined %}
+{{ name.address }}
 {% endif -%}
 {% endfor %}
