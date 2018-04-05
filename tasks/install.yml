@@ -1,0 +1,59 @@
+---
+
+- name: Install apt Dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+  with_items:
+    - libio-socket-ssl-perl
+    - perl
+    - cpanminus
+  become: true
+
+- name: Install CPAN Dependencies
+  cpanm:
+    name: "{{ item }}"
+    system_lib: yes
+  with_items:
+    - "Data::Validate::IP"
+    - "IO::Socket::SSL"
+    - "IO::Socket::INET6"
+    - "JSON::PP"
+  become: true
+
+- name: Copy over DDClient Executable
+  synchronize:
+    src: "{{ ddclient_git_repo_dest }}/ddclient"
+    dest: "/usr/sbin/ddclient"
+    checksum: yes
+    times: no
+  delegate_to: "{{ inventory_hostname }}"
+  when: _ddclient_git_cloned.changed
+  become: true
+
+- name: Create /etc and /var/cache Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  with_items:
+    - "/etc/ddclient"
+    - "/var/cache/ddclient"
+  become: true
+
+- name: Copy Over init.d File
+  synchronize:
+    src: "{{ ddclient_git_repo_dest }}/sample-etc_rc.d_init.d_ddclient.ubuntu"
+    dest: "/etc/init.d/ddclient"
+    checksum: yes
+    times: no
+  when:
+    - ansible_os_family == "Debian"
+    - _ddclient_git_cloned.changed
+  delegate_to: "{{ inventory_hostname }}"
+  become: true
+  notify: Autostart DDClient
