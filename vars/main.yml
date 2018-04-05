@@ -5,12 +5,11 @@ ddclient_git_repo_http: "https://github.com/wimpunk/ddclient.git"
 ddclient_git_repo_dest: "{{ ansible_user_dir }}/git/ddclient"
 ddclient_conf:
   pid_file: /var/run/ddclient.pid
-  name: "Blank"
-    rules:
-      - "protocol": value
-      - "use": value
-      - "server": value
-      - "ssl": value
-      - "login": value
-      - "password": value
-      - "address": value
+  - name: "Blank"
+    protocol: value
+    use: value
+    server: value
+    ssl: value
+    login: value
+    password: value
+    address: value
