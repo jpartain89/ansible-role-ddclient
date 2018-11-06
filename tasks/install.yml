@@ -2,14 +2,10 @@
 
 - name: Install apt Dependencies
   apt:
-    name: "{{ item }}"
+    name: ['libio-socket-ssl-perl', 'perl', 'cpanminuso']
     state: latest
     update_cache: yes
     cache_valid_time: 86400
-  with_items:
-    - libio-socket-ssl-perl
-    - perl
-    - cpanminus
   become: true
 
 - name: Install CPAN Dependencies
