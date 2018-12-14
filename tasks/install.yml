@@ -2,7 +2,7 @@
 
 - name: Install apt Dependencies
   apt:
-    name: ['libio-socket-ssl-perl', 'perl', 'cpanminuso']
+    name: ['libio-socket-ssl-perl', 'perl', 'cpanminus']
     state: latest
     update_cache: yes
     cache_valid_time: 86400
