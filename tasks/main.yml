@@ -9,8 +9,6 @@
     accept_hostkey: yes
   register: _ddclient_git_cloned
 
-- debug: var=_ddclient_git_cloned
-
 - import_tasks: install.yml
 
 - name: Build Out ddclient.conf File
