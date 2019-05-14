@@ -2,10 +2,12 @@
 
 - name: Install apt Dependencies
   apt:
-    name: ['libio-socket-ssl-perl', 'perl', 'cpanminus']
+    name: "{{ item }}"
     state: latest
     update_cache: yes
     cache_valid_time: 86400
+  with_items:
+    - "{{ ddclient_apt_install }}"
   become: true
 
 - name: Install CPAN Dependencies
@@ -13,10 +15,7 @@
     name: "{{ item }}"
     system_lib: yes
   with_items:
-    - "Data::Validate::IP"
-    - "IO::Socket::SSL"
-    - "IO::Socket::INET6"
-    - "JSON::PP"
+    - "{{ ddclient_cpan_install }}"
   become: true
 
 - name: Copy over DDClient Executable
