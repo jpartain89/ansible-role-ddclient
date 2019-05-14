@@ -1,6 +1,18 @@
 ---
 # ddclient/defaults/main.yml
 
+ddclient_apt_install:
+  - "libio-socket-ssl-perl"
+  - "perl"
+  - "cpanminus"
+
+ddclient_cpan_install:
+  - "Data::Validate::IP"
+  - "IO::Socket::SSL"
+  - "IO::Socket::INET6"
+  - "JSON::PP"
+
+
 ddclient_git_repo_http: "https://github.com/wimpunk/ddclient.git"
 ddclient_git_repo_dest: "{{ ansible_user_dir }}/git/ddclient"
 ddclient_conf:

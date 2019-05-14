@@ -1,13 +1,2 @@
 ---
 # ddclient/vars/main.yml
-
-ddclient_apt_install:
-  - "libio-socket-ssl-perl"
-  - "perl"
-  - "cpanminus"
-
-ddclient_cpan_install:
-  - "Data::Validate::IP"
-  - "IO::Socket::SSL"
-  - "IO::Socket::INET6"
-  - "JSON::PP"
