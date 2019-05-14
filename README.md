@@ -36,6 +36,11 @@ ddclient_conf:
             protocol: dyndns2
             use: web
             server: domains.google.com
+            ddclient_cpan_install:
+              - "Data::Validate::IP"
+              - "IO::Socket::SSL"
+              - "IO::Socket::INET6" # This one can be left out since it requries IPv6
+              - "JSON::PP"
 
       roles:
          - jpartain89.ddclient

@@ -4,7 +4,7 @@ galaxy_info:
   description: Installation and Configuration from Git of DDClient
   company: "JPCDI"
   license: "license (BSD, GPLv3)"
-  min_ansible_version: 2.0
+  min_ansible_version: 2.7.10
   platforms:
   - name: Ubuntu
     versions:
