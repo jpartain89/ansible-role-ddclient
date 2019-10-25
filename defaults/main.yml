@@ -13,14 +13,15 @@ ddclient_git_repo_http: "https://github.com/ddclient/ddclient.git"
 ddclient_git_repo_dest: "{{ ansible_user_dir }}/git/ddclient"
 
 ddclient_conf:
-  - name: "Blank"
-    protocol: value
-    use: value
-    server: value
-    ssl: value
-    login: value
-    password: value
-    address: value
+  conf:
+    - name: "Blank"
+      protocol: value
+      use: value
+      server: value
+      ssl: value
+      login: value
+      password: value
+      address: value
     directory: /etc/ddclient
     file: ddclient.conf
 
