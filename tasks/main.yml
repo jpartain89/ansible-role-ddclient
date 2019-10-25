@@ -46,6 +46,7 @@
         name: ddclient
         enabled: yes
         state: started
+      ignore_errors: true
   rescue:
     - name: Show Output of Failed Service
       shell: 'ddclient -daemon=0 -debug -verbose -noquiet'
