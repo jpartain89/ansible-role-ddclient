@@ -1,8 +1,6 @@
 language: c
 sudo: required
-jobs:
-  include:
-    - os: 
+dist: xenial
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_9efe89651950_key -iv $encrypted_9efe89651950_iv -in tests/.vault_pass.txt.enc -out .vault_pass.txt -d

@@ -26,7 +26,7 @@
     group: root
     mode: 0775
   with_items:
-    - "{{ ddclient_conf.directory }}"
+    - "{{ ddclient_file.directory }}"
     - "{{ ddclient_cache }}"
     - "{{ ddclient_pid.directory }}"
   become: true

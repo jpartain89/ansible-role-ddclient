@@ -21,7 +21,7 @@
 - name: Build Out ddclient.conf File
   template:
     src: ddclient.conf.j2
-    dest: "{{ ddclient_conf.directory }}/{{ ddclient_conf.file }}"
+    dest: "{{ ddclient_file.directory }}/{{ ddclient_file.file }}"
     owner: root
     group: root
   become: true
@@ -35,6 +35,6 @@
     mode: "{{ item.mode }}"
     state: file
   with_items:
-    - { path: "/etc/ddclient/ddclient.conf", mode: "0700" }
-    - { path: "/usr/sbin/ddclient", mode: "0775" }
+    - { path: "{{ ddclient_file.directory }}/{{ ddclient_file.file }}", mode: "0700" }
+    - { path: "{{ ddclient_exec }}", mode: "0775" }
   become: true
