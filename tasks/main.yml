@@ -39,14 +39,15 @@
     - { path: "{{ ddclient_exec }}", mode: "0775" }
   become: true
 
-- name: Autostart DDClient
+- name: Autostart DDClient Block
   block:
-    - service:
-      name: ddclient
-      enabled: yes
-      state: started
+    - name: Autostart DDClient
+      service:
+        name: ddclient
+        enabled: yes
+        state: started
   rescue:
-    - shell: 'systemctl status ddclient.service'
+    - name: Show Output of Failed Service
+      shell: 'systemctl status ddclient.service'
       register: _ddclient_systemd
-    - debug:
-      var: _ddclient_systemd[stdout]
+    - debug: var=_ddclient_systemd
