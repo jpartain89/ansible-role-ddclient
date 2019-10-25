@@ -4,17 +4,18 @@
 ddclient_apt_install:
   - "libio-socket-ssl-perl"
   - "perl"
-  - "cpanminus"
+  - "libdata-validate-ip-perl"
+  - "libio-socket-ssl-perl"
+  - "libio-socket-inet6-perl"
+  - "libjson-pp-perl"
 
-ddclient_cpan_install:
-  - "Data::Validate::IP"
-  - "IO::Socket::SSL"
-  - "IO::Socket::INET6"
-  - "JSON::PP"
-
-
-ddclient_git_repo_http: "https://github.com/wimpunk/ddclient.git"
+ddclient_git_repo_http: "https://github.com/ddclient/ddclient.git"
 ddclient_git_repo_dest: "{{ ansible_user_dir }}/git/ddclient"
+
+ddclient_file:
+  directory: /etc/ddclient
+  file: ddclient.conf
+
 ddclient_conf:
   - name: "Blank"
     protocol: value
@@ -24,3 +25,9 @@ ddclient_conf:
     login: value
     password: value
     address: value
+
+ddclient_exec: /usr/sbin/ddclient
+ddclient_pid:
+  directory: /var/run/ddclient
+  file: ddclient.pid
+ddclient_cache: /var/cache/ddclient

@@ -8,18 +8,10 @@
     cache_valid_time: 86400
   become: true
 
-- name: Install CPAN Dependencies
-  cpanm:
-    name: "{{ item }}"
-    system_lib: yes
-  with_items:
-    - "{{ ddclient_cpan_install }}"
-  become: true
-
 - name: Copy over DDClient Executable
   synchronize:
     src: "{{ ddclient_git_repo_dest }}/ddclient"
-    dest: "/usr/sbin/ddclient"
+    dest: "{{ ddclient_exec }}"
     checksum: yes
     times: no
   delegate_to: "{{ inventory_hostname }}"
@@ -34,19 +26,15 @@
     group: root
     mode: 0775
   with_items:
-    - "/etc/ddclient"
-    - "/var/cache/ddclient"
+    - "{{ ddclient_file.directory }}"
+    - "{{ ddclient_cache }}"
+    - "{{ ddclient_pid.directory }}"
   become: true
 
-- name: Copy Over init.d File
-  synchronize:
-    src: "{{ ddclient_git_repo_dest }}/sample-etc_rc.d_init.d_ddclient.ubuntu"
-    dest: "/etc/init.d/ddclient"
-    checksum: yes
-    times: no
-  when:
-    - ansible_os_family == "Debian"
-    - _ddclient_git_cloned.changed
-  delegate_to: "{{ inventory_hostname }}"
+- name: Create Systemd File
+  template:
+    src: "ddclient.service.j2"
+    dest: "/etc/systemd/system/ddclient.service"
+    owner: root
+    group: root
   become: true
-  notify: Autostart DDClient
