@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=forking
 PIDFile={{ ddclient_pid.directory}}/{{ ddclient_pid.file }}
-ExecStart={{ ddclient_exec }} -pid {{ ddclient_pid.directory}}/{{ ddclient_pid.file }} -file {{ ddclient_conf.directory }}/{{ ddclient_conf.file }}
+ExecStart={{ ddclient_exec }} -pid {{ ddclient_pid.directory}}/{{ ddclient_pid.file }} -file {{ ddclient_file.directory }}/{{ ddclient_file.file }}
 ExecStop=/usr/bin/pkill -SIGKILL -F {{ ddclient_pid.directory}}/{{ ddclient_pid.file }}
 
 [Install]
