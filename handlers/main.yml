@@ -1,10 +1,16 @@
 ---
 
 - name: Autostart DDClient
-  service:
-    name: ddclient
-    enabled: yes
-    state: started
+  block:
+    - service:
+      name: ddclient
+      enabled: yes
+      state: started
+  rescue:
+    - shell: 'systemctl status ddclient.service'
+      register: _ddclient_systemd
+    - debug:
+      var: _ddclient_systemd[stdout]
 
 - name: Restart DDClient
   service:
