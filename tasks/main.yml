@@ -48,6 +48,6 @@
         state: started
   rescue:
     - name: Show Output of Failed Service
-      shell: 'systemctl status ddclient.service'
+      shell: 'ddclient -daemon=0 -debug -verbose -noquiet'
       register: _ddclient_systemd
     - debug: var=_ddclient_systemd
