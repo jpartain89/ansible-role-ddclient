@@ -25,7 +25,7 @@
     owner: root
     group: root
   become: true
-  notify: Restart DDClient
+  #notify: Restart DDClient
 
 - name: Update Mode for New Files
   file:
