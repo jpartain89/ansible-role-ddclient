@@ -38,3 +38,15 @@
     - { path: "{{ ddclient_file.directory }}/{{ ddclient_file.file }}", mode: "0700" }
     - { path: "{{ ddclient_exec }}", mode: "0775" }
   become: true
+
+- name: Autostart DDClient
+  block:
+    - service:
+      name: ddclient
+      enabled: yes
+      state: started
+  rescue:
+    - shell: 'systemctl status ddclient.service'
+      register: _ddclient_systemd
+    - debug:
+      var: _ddclient_systemd[stdout]
