@@ -11,7 +11,7 @@
 - name: Make Sure git is Installed
   apt:
     name: git
-    state: latest
+    state: present
     update_cache: yes
     cache_valid_time: 86400
   become: true
