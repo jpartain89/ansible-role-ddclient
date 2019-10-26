@@ -1,7 +1,12 @@
 # {{ ansible_managed }}
 
 {% for name in ddclient_conf %}
-# {{ name.name }}
+{% if name.name == "default" %}
+# Main Config
+{% for key, value in name.items() %}
+# {{ key }}={{ value }}
+{% endfor %}
+{% endif %}
 {% if name.protocol is defined %}
 protocol={{ name.protocol }}
 {% endif -%}
@@ -23,7 +28,10 @@ login={{ name.login }}
 {% if name.password is defined %}
 password={{ name.password }}
 {% endif -%}
-{% if name.address is defined %}
-zone={{ name.address }}
+{% if name.zone is defined %}
+zone={{ name.zone }}
 {% endif -%}
+{% if name.address is defined %}
+{{ name.address }}
+{% endif %}
 {% endfor %}

@@ -17,6 +17,8 @@ ddclient_file:
   file: ddclient.conf
 
 ddclient_conf:
+  - name: default
+    pid: ~/pid.pid
   - name: "Blank"
     protocol: value
     use: value
