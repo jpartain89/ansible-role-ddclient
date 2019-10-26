@@ -6,4 +6,4 @@
     - vars.yml
 
   roles:
-    - ../jpartain89.ddclient
+    - jpartain89.ddclient
