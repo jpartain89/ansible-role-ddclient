@@ -1,5 +1,9 @@
 ---
 - name: Converge
   hosts: all
+
+  vars_files:
+    - vars.yml
+
   roles:
-    - role: jpartain89.ddclient
+    - role:ansible-role-ddclient

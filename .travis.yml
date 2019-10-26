@@ -1,29 +1,36 @@
-language: c
-sudo: required
-dist: xenial
+language: python
+services: docker
+
+env:
+  global:
+    - ROLE_NAME: ddclient
+    - secure: jJY+4xzC6OR9YVkavhXNocIvZHHzbattNJODwxgbL0psIJXoBxSYNFqFtmF3TaiYlacwOEOsJxj7m484OqPAoyXRyMvQpWhPVHvPh5/F2rYk5vR6/IOwvEU7CqUf/HYuokWsHvWHHqgYRHmj55639PurvnCD2mWG672eZf3k9gzDQ+mN2q7n2iyaPXr+c9RAnjdnjsJrCwp0XD7GxDMAstLz4LZ4Cb+6bHXhoewSy9Dvgs08wUO1lONV5Qi8hzpvQ7QEhegS8VRoCAGmPMtF3TfJmHBtCNzNQ/IPCsjJEdcTrIm1AeNcE+9oy10moC4qNnY+5qQgUeApBEWGdALcvTvt8hAAfwu52wWILTwNyFPsB437+WCNcdE1owp4okcb/4BbVsvX7js/N+WuRF553CryrbDjgqvwjlvex28IQ1z+ZrxO7gm/yzAqsXozjj93Z/bUvTZv0vuymOWB0KbAnUpS1qRvw8bAE3AeyYY1TsqVeLCO1EDmg6JDLRNvuz8NJ3w4s6HudwX0A9W9mY3fjziqJbOalbEMv/TCqI628xSKsy2ae9EMY+1QcPjXC2HptiXNX5HERh6hXhdQ4dtvSMye+nMMXYHj3Rv2+ekGac8d5nfwusFZbHAFBYpTOmQVwDgMQhwqZefO9ar77IuSdb+XRhaqGULDq+HGGW21uZU=
+  matrix:
+    - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: ubuntu1604
+    - MOLECULE_DISTRO: debian9
+    - MOLECULE_DISTRO: debian10
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_9efe89651950_key -iv $encrypted_9efe89651950_iv -in tests/.vault_pass.txt.enc -out .vault_pass.txt -d
+- openssl aes-256-cbc -k "$vault_file_pass" -in molecule/default/.vault_pass.txt.enc -out molecule/default/.vault_pass.txt -d
 - sudo apt-get update -qq
 - sudo apt-get install -qq python-apt python
 - sudo -H pip install --upgrade urllib3[secure] pyopenssl
-- sudo -H pip install -U ansible-vault
 
 install:
-- sudo -H pip install --upgrade ansible
-- "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+- sudo -H pip install --upgrade testinfra molecule docker
+
+before_script:
+- cd ../
+- mv ansible-role-$ROLE_NAME jpartain89.$ROLE_NAME
+- cd jpartain89.$ROLE_NAME
 
 script:
-- ANSIBLE_VAULT_PASSWORD_FILE=.vault_pass.txt ansible-playbook -i tests/inventory
-  tests/test.yml --syntax-check
-- ANSIBLE_VAULT_PASSWORD_FILE=.vault_pass.txt ansible-playbook -i tests/inventory
-  tests/test.yml --connection=local --become
-- "[ -e /etc/ddclient/ddclient.conf ] && (echo 'ddclient.conf was created correctly.'
-  && exit 0) || (echo 'ddclient.conf was not created.' && exit 1)"
-- "[ -e /usr/sbin/ddclient ] && (echo 'ddclient binary is installed.' && exit 0) ||
-  (echo 'ddclient binary is not installed' && exit 1)"
+- molecule test
+
 after_script:
 - shred .vault_pass.txt
+
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
   slack:
