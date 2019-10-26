@@ -15,10 +15,10 @@ before_install:
 - openssl aes-256-cbc -k "$vault_file_pass" -in molecule/default/.vault_pass.txt.enc -out molecule/default/.vault_pass.txt -d
 - sudo apt-get update -qq
 - sudo apt-get install -qq python-apt python
-- sudo -H pip install --upgrade urllib3[secure] pyopenssl
+- sudo -H pip3 install --upgrade urllib3[secure] pyopenssl
 
 install:
-- sudo -H pip install testinfra molecule docker
+- sudo -H pip3 install testinfra molecule docker
 
 before_script:
 - cd ../
