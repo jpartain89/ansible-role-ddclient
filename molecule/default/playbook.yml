@@ -6,4 +6,4 @@
     - vars.yml
 
   roles:
-    - role:ansible-role-ddclient
+    - role:jpartain89:ddclient
