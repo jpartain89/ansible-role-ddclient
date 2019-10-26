@@ -1,9 +1,9 @@
 # {{ ansible_managed }}
 
 {% for name in ddclient_conf %}
-{% if name.name is default %}
+{% if name.name == "default" %}
 # Main Config
-{% for key, value in name.iteritems() %}
+{% for key, value in name.items() %}
 # {{ key }}={{ value }}
 {% endfor %}
 {% endif %}
