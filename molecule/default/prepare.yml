@@ -1,0 +1,15 @@
+---
+
+- name: Prepare
+  hosts: all
+
+  tasks:
+    - name: Install Required Apps
+      apt:
+        name: [ 'rsync', 'aptitude' ]
+        state: present
+        update_cache: yes
+        cache_valid_time: 86400
+      with_items:
+        - rsync
+        - aptitude
