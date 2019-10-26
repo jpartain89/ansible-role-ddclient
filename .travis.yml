@@ -18,7 +18,7 @@ before_install:
 - sudo -H pip install --upgrade urllib3[secure] pyopenssl
 
 install:
-- sudo -H pip install molecule docker
+- pip install molecule docker
 
 before_script:
 - cd ../
