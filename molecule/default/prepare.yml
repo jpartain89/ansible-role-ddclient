@@ -6,7 +6,7 @@
   tasks:
     - name: Install Required Apps
       apt:
-        name: "{{ item }}"
+        name: [ 'rsync', 'aptitude' ]
         state: present
         update_cache: yes
         cache_valid_time: 86400
