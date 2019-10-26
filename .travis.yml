@@ -29,7 +29,7 @@ script:
 - molecule test
 
 after_script:
-- shred .vault_pass.txt
+- shred molecule/default/.vault_pass.txt
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
