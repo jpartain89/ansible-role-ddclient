@@ -8,14 +8,6 @@
     owner: "{{ ansible_real_user_id }}"
     group: "{{ ansible_real_group_id }}"
 
-- name: Make Sure git is Installed
-  apt:
-    name: git
-    state: present
-    update_cache: yes
-    cache_valid_time: 86400
-  become: true
-
 - name: Clone DDClient's Git Repo
   git:
     repo: "{{ ddclient_git_repo_http }}"
