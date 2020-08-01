@@ -7,6 +7,10 @@
     state: directory
     owner: "{{ ansible_real_user_id }}"
     group: "{{ ansible_real_group_id }}"
+  register: ddclient_git_output
+
+- name: Show Output
+  debug:  ddclient_git_output.stdout
 
 - name: Make Sure git is Installed
   apt:
