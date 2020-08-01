@@ -10,7 +10,7 @@
   register: ddclient_git_output
 
 - name: Show Output
-  debug:  ddclient_git_output.stdout
+  debug: var=ddclient_git_output.stdout
 
 - name: Make Sure git is Installed
   apt:
